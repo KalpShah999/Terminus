@@ -1,6 +1,7 @@
 import time
 
 from pixel_text_screen import PixelTextScreen
+from data import convert_letter_to_array
 
 
 def main():
@@ -10,11 +11,15 @@ def main():
     pixel_data = [[0 for _ in range(screen.pixel_width)] for _ in range(screen.pixel_height)]
     
     text_data = [[0 for _ in range(screen.pixel_height)]] # Length is screen.pixel_height
-    text_data.append([0, 0, 1, 1, 0, 0, 0, 0, 0, 0])
-    text_data.append([0, 0, 0, 1, 1, 0, 0, 0, 0, 0])
-    text_data.append([0, 0, 0, 0, 1, 1, 0, 0, 0, 0])
-    text_data.append([0, 0, 0, 0, 0, 1, 1, 0, 0, 0])
-    text_data.append([0, 0, 0, 0, 0, 0, 1, 1, 0, 0])
+
+    message = "A a. a. A. b"
+    for character in message:
+        character_data = convert_letter_to_array(character)
+        print("Character", character, " length:", len(character_data))
+        for data_line in character_data:
+            text_data.append(data_line)
+    
+    print("Data Length:", len(text_data))
 
     try: 
         while True:
