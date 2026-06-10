@@ -8,36 +8,30 @@ def main():
     screen = PixelTextScreen()
 
     pixel_data = [[0 for _ in range(screen.pixel_width)] for _ in range(screen.pixel_height)]
-    pixel_data[6][25] = 1
-    pixel_location = [6, 25]
+    
+    text_data = [[0 for _ in range(screen.pixel_height)]] # Length is screen.pixel_height
+    text_data.append([0, 0, 1, 1, 0, 0, 0, 0, 0, 0])
+    text_data.append([0, 0, 0, 1, 1, 0, 0, 0, 0, 0])
+    text_data.append([0, 0, 0, 0, 1, 1, 0, 0, 0, 0])
+    text_data.append([0, 0, 0, 0, 0, 1, 1, 0, 0, 0])
+    text_data.append([0, 0, 0, 0, 0, 0, 1, 1, 0, 0])
 
     try: 
         while True:
+            # Each iteration, start from left to right 
+            for y in range(len(pixel_data)):
+                for x in range(len(pixel_data[y])):
+                    if (x < len(pixel_data[y]) - 1):
+                        pixel_data[y][x] = pixel_data[y][x+1]
+                    elif (len(text_data) > 0):
+                        pixel_data[y][x] = text_data[0][y] 
+                    else: 
+                        pixel_data[y][x] = 0
+            if (len(text_data) > 0): text_data.pop(0)
+
             screen.update_pixels(pixel_data)
 
-            # TODO: improve input system
-            input_key = input()
-            match input_key:
-                case 'w':
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 0
-                    pixel_location = [pixel_location[0] - 1, pixel_location[1]]
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 1
-                case 'd': 
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 0
-                    pixel_location = [pixel_location[0], pixel_location[1] + 1]
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 1
-                case 'a': 
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 0
-                    pixel_location = [pixel_location[0], pixel_location[1] - 1]
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 1
-                case 's':
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 0
-                    pixel_location = [pixel_location[0] + 1, pixel_location[1]]
-                    pixel_data[pixel_location[0]][pixel_location[1]] = 1
-                case _:
-                    continue
-
-            # time.sleep(0.5)
+            time.sleep(0.1)
     except KeyboardInterrupt: 
         print("Terminating")
     except Exception as error:
