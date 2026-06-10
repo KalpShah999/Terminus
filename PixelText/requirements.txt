@@ -1,0 +1,5 @@
+# Visualizer
+# The window runs in a separate process and is drawn with PyQt6.
+# (multiprocessing, used to start that process, is part of Python's standard
+# library, so PyQt6 is the only third-party package needed.)
+PyQt6
